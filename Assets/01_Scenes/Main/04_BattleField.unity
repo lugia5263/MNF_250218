@@ -327,7 +327,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 820465749}
         m_TargetAssemblyTypeName: PlayerControll, Assembly-CSharp
         m_MethodName: OnSkill2
         m_Mode: 1
@@ -655,72 +655,6 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5276802589692811124, guid: b53aec96d7c862b4bad77c5d6c172777, type: 3}
   m_PrefabInstance: {fileID: 248563620}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &253035576
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 820465750}
-    m_Modifications:
-    - target: {fileID: 695672709155235444, guid: 85be589130e264b48846db080b4a88f5, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 695672709155235444, guid: 85be589130e264b48846db080b4a88f5, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 695672709155235444, guid: 85be589130e264b48846db080b4a88f5, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 695672709155235444, guid: 85be589130e264b48846db080b4a88f5, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1.0000001
-      objectReference: {fileID: 0}
-    - target: {fileID: 695672709155235444, guid: 85be589130e264b48846db080b4a88f5, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 695672709155235444, guid: 85be589130e264b48846db080b4a88f5, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 695672709155235444, guid: 85be589130e264b48846db080b4a88f5, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 695672709155235444, guid: 85be589130e264b48846db080b4a88f5, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 695672709155235444, guid: 85be589130e264b48846db080b4a88f5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 695672709155235444, guid: 85be589130e264b48846db080b4a88f5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 695672709155235444, guid: 85be589130e264b48846db080b4a88f5, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4821523057774068450, guid: 85be589130e264b48846db080b4a88f5, type: 3}
-      propertyPath: m_Name
-      value: Partner
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 85be589130e264b48846db080b4a88f5, type: 3}
---- !u!4 &253035577 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 695672709155235444, guid: 85be589130e264b48846db080b4a88f5, type: 3}
-  m_PrefabInstance: {fileID: 253035576}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &254671917
 PrefabInstance:
@@ -1319,9 +1253,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 820465749}
           m_TargetAssemblyTypeName: PlayerControll, Assembly-CSharp
-          m_MethodName: OnLeft
+          m_MethodName: OnLeftBtn
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1335,9 +1269,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 820465749}
           m_TargetAssemblyTypeName: PlayerControll, Assembly-CSharp
-          m_MethodName: OnLeftUp
+          m_MethodName: OnLeftBtnUp
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1668,7 +1602,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Jump
+  m_text: Skill2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: aac08848be7c71a4b98b87c327169e2a, type: 2}
   m_sharedMaterial: {fileID: -869011281919567315, guid: aac08848be7c71a4b98b87c327169e2a, type: 2}
@@ -2042,17 +1976,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5276802589692811124, guid: b53aec96d7c862b4bad77c5d6c172777, type: 3}
   m_PrefabInstance: {fileID: 553046736}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &567673045 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6319419410192237311, guid: 3c2dd0f0c9c63ba489da3e22325c52c1, type: 3}
-  m_PrefabInstance: {fileID: 1110039085}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51b057d8ce7ec00409c96f827514af31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &572810584
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2197,7 +2120,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 820465749}
         m_TargetAssemblyTypeName: PlayerControll, Assembly-CSharp
         m_MethodName: OnJump
         m_Mode: 1
@@ -3950,7 +3873,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 820465749}
         m_TargetAssemblyTypeName: PlayerControll, Assembly-CSharp
         m_MethodName: OnSkill1
         m_Mode: 1
@@ -4164,14 +4087,6 @@ PrefabInstance:
       propertyPath: m_Center.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4057451222193189666, guid: 3c2dd0f0c9c63ba489da3e22325c52c1, type: 3}
-      propertyPath: modelPlayer
-      value: 
-      objectReference: {fileID: 567673045}
-    - target: {fileID: 4057451222193189666, guid: 3c2dd0f0c9c63ba489da3e22325c52c1, type: 3}
-      propertyPath: modelPartner
-      value: 
-      objectReference: {fileID: 1465599269}
     - target: {fileID: 4728928192599523531, guid: 3c2dd0f0c9c63ba489da3e22325c52c1, type: 3}
       propertyPath: m_Name
       value: PlayerControl
@@ -4234,10 +4149,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 8945119977962566639, guid: 3c2dd0f0c9c63ba489da3e22325c52c1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 253035577}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c2dd0f0c9c63ba489da3e22325c52c1, type: 3}
 --- !u!1001 &1159508842
@@ -5670,17 +5582,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5276802589692811124, guid: b53aec96d7c862b4bad77c5d6c172777, type: 3}
   m_PrefabInstance: {fileID: 1460149877}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1465599269 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4035121309427716567, guid: 85be589130e264b48846db080b4a88f5, type: 3}
-  m_PrefabInstance: {fileID: 253035576}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51b057d8ce7ec00409c96f827514af31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1469690161
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7885,7 +7786,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Jump
+  m_text: Skill1
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: aac08848be7c71a4b98b87c327169e2a, type: 2}
   m_sharedMaterial: {fileID: -869011281919567315, guid: aac08848be7c71a4b98b87c327169e2a, type: 2}
@@ -8113,7 +8014,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 820465749}
         m_TargetAssemblyTypeName: PlayerControll, Assembly-CSharp
-        m_MethodName: Attack
+        m_MethodName: OnAttack
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9322,9 +9223,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 820465749}
           m_TargetAssemblyTypeName: PlayerControll, Assembly-CSharp
-          m_MethodName: OnRight
+          m_MethodName: OnRightBtn
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -9338,9 +9239,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 0}
+        - m_Target: {fileID: 820465749}
           m_TargetAssemblyTypeName: PlayerControll, Assembly-CSharp
-          m_MethodName: OnRightUp
+          m_MethodName: OnRightBtnUp
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

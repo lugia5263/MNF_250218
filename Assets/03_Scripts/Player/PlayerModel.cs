@@ -9,8 +9,8 @@ public class PlayerModel : MonoBehaviour
 
 
 	[Header("Debug")]
-	[SerializeField]private GameObject targetPartner;
-	[SerializeField]private PlayerModelAniCtrl targetPartnerAni;
+	[SerializeField]private GameObject target;
+	[SerializeField]private PlayerModelAniCtrl targetAni;
 //	[SerializeField]private PlayerEnum.MODEL_NUMBER_NAME targetPartnerEnum = PlayerEnum.MODEL_NUMBER_NAME.NONE;
 
 
@@ -35,11 +35,11 @@ public class PlayerModel : MonoBehaviour
 	/// <param name="_targetEnum"></param>
 	private void Change(PlayerEnum.MODEL_NUMBER_NAME _targetEnum)
 	{
-		if(targetPartner != null)
+		if(target != null)
 		{
-			Destroy(targetPartner);
-			targetPartner = null;
-			targetPartnerAni = null;
+			Destroy(target);
+			target = null;
+			targetAni = null;
 			//targetPartnerEnum = PlayerEnum.MODEL_NUMBER_NAME.NONE;
 		}
 
@@ -47,9 +47,11 @@ public class PlayerModel : MonoBehaviour
 		switch (_targetEnum)
 		{
 			case PlayerEnum.MODEL_NUMBER_NAME.MAWANG:
-				targetPartner = Instantiate(modelPrefabs[0],Vector3.zero,Quaternion.Euler(new Vector3(0,90,0)));
-				targetPartner.transform.parent = this.transform;
-				targetPartnerAni = targetPartner.GetComponent<PlayerModelAniCtrl>();
+				target = Instantiate(modelPrefabs[0],Vector3.zero,Quaternion.identity);
+				target.transform.parent = this.transform;
+				target.transform.localPosition = Vector3.zero;
+				target.transform.rotation = Quaternion.Euler(new Vector3(0,90,0));
+				targetAni = target.GetComponent<PlayerModelAniCtrl>();
 				break;
 			default:
 				break;
@@ -62,8 +64,8 @@ public class PlayerModel : MonoBehaviour
 	/// <param name="_aniEnum">PlayerEnum.Model_Ani State</param>
 	public void PlayModelAnimation(PlayerEnum.MODEL_ANI _aniEnum)
 	{
-		if (targetPartnerAni == null) return;
-		targetPartnerAni.PlayAni(ref _aniEnum);
+		if (targetAni == null) return;
+		targetAni.PlayAni(ref _aniEnum);
 	}
 
 

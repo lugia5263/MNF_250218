@@ -11,6 +11,7 @@ public class PlayerControll : MonoBehaviour
 	private Rigidbody rigidbody;
 
 	[SerializeField] private float jumpPower = 100.0f;
+	[SerializeField] private GameObject model;
 	[SerializeField] private PlayerModel modelPlayer;
 	[SerializeField] private PlayerModel modelPartner;
 
@@ -187,11 +188,11 @@ public class PlayerControll : MonoBehaviour
 	{
 		if(_isLeft)
 		{
-			//transform.rotation = Quaternion.Euler(0, -90, 0);
+			model.transform.localRotation = Quaternion.Euler(0, -90, 0);
 		}
 		else
 		{
-			//transform.rotation = Quaternion.Euler(0, 90, 0);
+			model.transform.localRotation = Quaternion.Euler(0, 90, 0);
 		}
 
 		modelPlayer.SetFlip(_isLeft);
