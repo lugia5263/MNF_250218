@@ -9,15 +9,18 @@ public class TownScene : MonoBehaviour
 
 	[Header("Setting_UI")]
 	[SerializeField] private Button[] uiBtn;
+	[SerializeField] private Button stageBackBtn;
 
 	[Header("Setting Fade")]
 	[SerializeField] private float fadeInTime;
 	[SerializeField] private float fadeOutTime;
 
+	[Header("Setting Script")]
 	[SerializeField] private SceneForFade sceneFade;
-
+	[SerializeField] private UIStage uiStage;
 
 	private WaitForSeconds fadeOutWait;
+
 	#region Awake Start Update
 	private void Start()
 	{
@@ -30,7 +33,10 @@ public class TownScene : MonoBehaviour
 		if(fadeOutWait == null) fadeOutWait = new WaitForSeconds(fadeOutTime);
 
 		uiBtn[5].interactable = true;
+		uiStage.OnReset();
 		sceneFade.StartFadeIn(fadeInTime);
+		stageBackBtn.onClick.RemoveAllListeners();
+		stageBackBtn.onClick.AddListener(OnStageCloseBtn);
 	}
 
 	#endregion
@@ -78,6 +84,7 @@ public class TownScene : MonoBehaviour
 	}
 	#endregion
 
+
 	#region Smithy
 	public void OnOffSmithyBtn(bool _isFlag)
 	{
@@ -96,13 +103,18 @@ public class TownScene : MonoBehaviour
 	public void OnOffStageBtn(bool _isFlag)
 	{
 		uiBtn[4].gameObject.SetActive(_isFlag);
-
 	}
 
-	public void OnGoAdventure()
+	public void OnStageOpenBtn()
 	{
-
+		uiStage.OnOpen();
 	}
+
+	public void OnStageCloseBtn()
+	{
+		uiStage.OnReset();
+	}
+
 	#endregion
 
 

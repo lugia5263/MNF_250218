@@ -7,43 +7,74 @@ public class LobbyScene : MonoBehaviour
 	[SerializeField] private SceneForFade sceneFade;
 
 	// Setting
-	[Header("SceneSettings")]
+	[Header("SceneSettings_Fade")]
 	[SerializeField] private float fadeInTime;
 	[SerializeField] private float fadeOutTime;
 
+
+	[Header("Setting_LobbyUI")]
 	[SerializeField] private GameObject uiQuitBox;
 
 	[SerializeField] private GameObject buddyWindow;
 
+
 	[SerializeField] private UnityEngine.UI.Button btnTown;
 	[SerializeField] private UnityEngine.UI.Button btnOption;
 	[SerializeField] private UnityEngine.UI.Button btnQuit;
+	[SerializeField] private UnityEngine.UI.Button stageBackBtn;
 
-
+	[Header("Setting_Script")]
 	[SerializeField] private UIOption uiOption;
+	[SerializeField] private UIStage uiStage;
 
 	private WaitForSeconds fadeOutWait;
 
 
+	#region Awake Start Update Reset
 	private void Start()
 	{
+		
+		if (fadeOutWait == null) fadeOutWait = new WaitForSeconds(fadeOutTime);
+
+		stageBackBtn.onClick.RemoveAllListeners();
+		stageBackBtn.onClick.AddListener(delegate { uiStage.OnReset(); });
+
+
+		OnReset();
+		sceneFade.StartFadeIn(fadeInTime);
+	}
+
+
+	/// <summary>
+	/// 로비씬을 초기 상태로 돌립니다.
+	/// </summary>
+	private void OnReset()
+	{
+		uiOption.OnReset();
+		uiStage.OnReset();
+
+		//======== Stage Reset
 		uiQuitBox.SetActive(false);
 		uiOption.gameObject.SetActive(false);
 		buddyWindow.SetActive(false);
-		if (fadeOutWait == null) fadeOutWait = new WaitForSeconds(fadeOutTime);
 
 		btnOption.interactable = true;
 		btnTown.interactable = true;
 		btnQuit.interactable = true;
 
-		sceneFade.StartFadeIn(fadeInTime);
+		//=========
+
 	}
+
+	#endregion
 
 	#region button Functions
 	public void OnGoAdventure()
 	{
-
+		uiStage.OnOpen();
 	}
+
+	
 
 	public void OnGoTown()
 	{

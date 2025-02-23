@@ -1,105 +1,94 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIStage : MonoBehaviour
 {
-	[Header("Settings")]
-	//[SerializeField] private GameObject[] mainStage;
-	[SerializeField] private GameObject[] subStage;
+	[Header("Settings_Main")]
+	[SerializeField] private GameObject stageObject;			// 최상위 오브젝트
+	[SerializeField] private GameObject mainStageObject;        // MainStage의 최상위 오브젝트
+	[SerializeField] private RectTransform[] mainStageBtnPos;	// TooltipUI를 위해 위치 저장
+
+	[Header("Settings_Sub")]
+	[SerializeField] private GameObject subStageObject;		// SubStage의 최상위 오브젝트
+	[SerializeField] private GameObject[] subStage;			// 스테이지 낱개
+	[SerializeField] private RectTransform[] subStageBtnPos;// TooltipUI를 위해 위치 저장
+
+	[Header("Settings_Description")]
 	[SerializeField] private UIStageDescription description;
-	[SerializeField] private Button[] mainStageBtn;
-	[SerializeField] private Button[] subStageBtn;
 
-	[SerializeField] private GameObject subStageObj;
-
+	[Header("Settings_Tooltip")]
+	[SerializeField] private UIStageTooltip stageTooltip;
 	#region Awake Start Update Reset
-	private void Start()
-	{
-		OnReset();
-	}
 	
-
-	private void OnReset()
+	// UI Open
+	public void OnOpen()
 	{
+		stageObject.SetActive(true);
+		mainStageObject.SetActive(true);
+	}
+
+	// UIClose
+	public void OnReset()
+	{
+		stageObject.gameObject.SetActive(false);
+		mainStageObject.SetActive(true);
+		subStageObject.SetActive(false);
 		description.gameObject.SetActive(false);
-		subStageObj.gameObject.SetActive(false);
 		foreach (var sub in subStage)
 		{
 			sub.SetActive(false);
 		}
+		stageTooltip.gameObject.SetActive(false);
 
-		foreach (var item in mainStageBtn)
-		{
-			item.interactable = true;
-		}
-
-		foreach (var item in subStage)
-		{
-			if (item.activeSelf == true)
-				item.gameObject.SetActive(false);
-		}
 	}
 	#endregion
 
 
-	#region MainStage
-	public void OnOpenMainStage(int _stageNumber)
+	#region [MainStage] 
+
+	#region mainStage ToolTip
+	public void OnMainStageToolTipOpen(int _stageNumber)
 	{
-		// Enter MainStage
-		description.gameObject.SetActive(true);
+		string testString = "";
 		switch (_stageNumber)
 		{
 			case 1:
-				
+				testString = "1_stage";
+				stageTooltip.Open(ref testString, ref mainStageBtnPos[0]);
 				break;
 			case 2:
-
+				testString = "2_stage";
+				stageTooltip.Open(ref testString, ref mainStageBtnPos[1]);
 				break;
 			case 3:
-
+				testString = "3_stage";
+				stageTooltip.Open(ref testString, ref mainStageBtnPos[2]);
 				break;
 			case 4:
-
+				testString = "4_stage";
+				stageTooltip.Open(ref testString, ref mainStageBtnPos[3]);
 				break;
 			case 5:
-
+				testString = "5_stage";
+				stageTooltip.Open(ref testString, ref mainStageBtnPos[4]);
 				break;
 			default:
 				Debug.Log("세팅된 값이 없습니다.");
 				break;
 		}
+		stageTooltip.gameObject.SetActive(true);
 	}
 
-	public void OnCloseMainStage(int _stageNumber)
+	public void OnMainStageToolTipClose()
 	{
-		// Exit MainStage
-		description.gameObject.SetActive(false);
-		switch (_stageNumber)
-		{
-			case 1:
-
-				break;
-			case 2:
-
-				break;
-			case 3:
-
-				break;
-			case 4:
-
-				break;
-			case 5:
-
-				break;
-			default:
-				Debug.Log("세팅된 값이 없습니다.");
-				break;
-		}
+		stageTooltip.Close();
 	}
+	#endregion
 
-	public void OnMainStage(int _stageNumber)
+
+	public void OnMainStageBtnClick(int _stageNumber)
 	{
 		// Click MainStage
 
@@ -119,262 +108,259 @@ public class UIStage : MonoBehaviour
 				Debug.Log("세팅된 값이 없습니다.");
 				break;
 		}
+		subStageObject.SetActive(true);
 	}
 	#endregion
 
-	#region SubStage
+
+	#region [SubStage]
+	// PC
+	// 1. 마우스가 들어오면 툴팁 오픈
+	// 2. 마우스가 벗어나면 툴팁 해제
+	// 3. 마우스로 클릭하면 설명에 세팅 및 오픈
+	// 4. 마우스로 배경을 클릭하면 설명 OFF
+
+	// Mob
+	// 1의 경우 구현 불가
+	// 2의 경우 구현 불가
+	// 3의 경우 서브 스테이지 이름 보여주고 설명란 세팅
+	// 4는 똑같이 구현
+
 	// Enter SubStage
-	public void OnOpenSubStage(string _stageNumber)
+	public void OnSubStageClick(string _stageNumber)
 	{
-		// Open SubStage
-		subStageObj.SetActive(true);
+		subStageObject.SetActive(true);
+		//if (description.gameObject.activeSelf == true) return;
+
 		description.gameObject.SetActive(true);
-		switch (_stageNumber)
-		{
-			case "1-1":
+		description.SetSubStageDescription(_stageNumber);
 
-				break;
-			case "1-2":
+		//StageManager.Instance.SetStageValue(_stageNumber);
 
-				break;
-			case "1-3":
+		//switch (_stageNumber)
+		//{
+		//	case "1-1":
+			
+		//		break;
+		//	case "1-2":
 
-				break;
-			case "1-4":
+		//		break;
+		//	case "1-3":
 
-				break;
-			case "1-5":
+		//		break;
+		//	case "1-4":
 
-				break;
+		//		break;
+		//	case "1-5":
 
-			case "2-1":
+		//		break;
 
-				break;
-			case "2-2":
+		//	case "2-1":
 
-				break;
-			case "2-3":
+		//		break;
+		//	case "2-2":
 
-				break;
-			case "2-4":
+		//		break;
+		//	case "2-3":
 
-				break;
-			case "2-5":
+		//		break;
+		//	case "2-4":
 
-				break;
+		//		break;
+		//	case "2-5":
 
-			case "3-1":
+		//		break;
 
-				break;
-			case "3-2":
+		//	case "3-1":
 
-				break;
-			case "3-3":
+		//		break;
+		//	case "3-2":
 
-				break;
-			case "3-4":
+		//		break;
+		//	case "3-3":
 
-				break;
-			case "3-5":
+		//		break;
+		//	case "3-4":
 
-				break;
-			default:
-				break;
-		}
+		//		break;
+		//	case "3-5":
+
+		//		break;
+
+		//	case "4-1":
+
+		//		break;
+		//	case "4-2":
+
+		//		break;
+		//	case "4-3":
+
+		//		break;
+		//	case "4-4":
+
+		//		break;
+		//	case "4-5":
+
+		//		break;
+
+		//	case "5-1":
+
+		//		break;
+		//	case "5-2":
+
+		//		break;
+		//	case "5-3":
+
+		//		break;
+		//	case "5-4":
+
+		//		break;
+		//	case "5-5":
+
+		//		break;
+		//	default:
+		//		break;
+		//}
 	}
 
-	public void OnCloseSubStage(string _stageNumber)
+	public void OnSubStageToolTipOpen(string _stageName)
 	{
-		// Close SubStage
-		subStageObj.SetActive(false);
-		description.gameObject.SetActive(false);
-		switch (_stageNumber)
+		string str = _stageName;
+		
+		description.SetSubStageDescription(_stageName);
+		switch (_stageName)
 		{
 			case "1-1":
-
+				stageTooltip.Open(ref str, ref subStageBtnPos[0]);
 				break;
 			case "1-2":
+				stageTooltip.Open(ref str, ref subStageBtnPos[1]);
 
 				break;
 			case "1-3":
+				stageTooltip.Open(ref str, ref subStageBtnPos[2]);
 
 				break;
 			case "1-4":
+				stageTooltip.Open(ref str, ref subStageBtnPos[3]);
 
 				break;
 			case "1-5":
+				stageTooltip.Open(ref str, ref subStageBtnPos[4]);
 
 				break;
 
 			case "2-1":
+				stageTooltip.Open(ref str, ref subStageBtnPos[5]);
 
 				break;
 			case "2-2":
+				stageTooltip.Open(ref str, ref subStageBtnPos[6]);
 
 				break;
 			case "2-3":
+				stageTooltip.Open(ref str, ref subStageBtnPos[7]);
 
 				break;
 			case "2-4":
+				stageTooltip.Open(ref str, ref subStageBtnPos[8]);
 
 				break;
 			case "2-5":
+				stageTooltip.Open(ref str, ref subStageBtnPos[9]);
 
 				break;
 
 			case "3-1":
+				stageTooltip.Open(ref str, ref subStageBtnPos[10]);
 
 				break;
 			case "3-2":
+				stageTooltip.Open(ref str, ref subStageBtnPos[11]);
 
 				break;
 			case "3-3":
+				stageTooltip.Open(ref str, ref subStageBtnPos[12]);
 
 				break;
 			case "3-4":
+				stageTooltip.Open(ref str, ref subStageBtnPos[13]);
 
 				break;
 			case "3-5":
+				stageTooltip.Open(ref str, ref subStageBtnPos[14]);
 
 				break;
 
 			case "4-1":
+				stageTooltip.Open(ref str, ref subStageBtnPos[15]);
 
 				break;
 			case "4-2":
+				stageTooltip.Open(ref str, ref subStageBtnPos[16]);
 
 				break;
 			case "4-3":
+				stageTooltip.Open(ref str, ref subStageBtnPos[17]);
 
 				break;
 			case "4-4":
+				stageTooltip.Open(ref str, ref subStageBtnPos[18]);
 
 				break;
 			case "4-5":
+				stageTooltip.Open(ref str, ref subStageBtnPos[19]);
 
 				break;
 
 			case "5-1":
+				stageTooltip.Open(ref str, ref subStageBtnPos[20]);
 
 				break;
 			case "5-2":
+				stageTooltip.Open(ref str, ref subStageBtnPos[21]);
 
 				break;
 			case "5-3":
+				stageTooltip.Open(ref str, ref subStageBtnPos[22]);
 
 				break;
 			case "5-4":
+				stageTooltip.Open(ref str, ref subStageBtnPos[23]);
 
 				break;
 			case "5-5":
+				stageTooltip.Open(ref str, ref subStageBtnPos[24]);
 
 				break;
 			default:
 				break;
 		}
+		stageTooltip.gameObject.SetActive(true);
 	}
+
+
+	public void OnSubStageToolTipClose()
+	{
+		//description.gameObject.SetActive(false);
+		stageTooltip.gameObject.SetActive(false);
+	}
+
+
 	#endregion
-
-	public void OnSubStage(string _stageNumber)
-	{
-		// Click SubStage
-		switch (_stageNumber)
-		{
-			case "1-1":
-
-				break;
-			case "1-2":
-
-				break;
-			case "1-3":
-
-				break;
-			case "1-4":
-
-				break;
-			case "1-5":
-
-				break;
-
-			case "2-1":
-
-				break;
-			case "2-2":
-
-				break;
-			case "2-3":
-
-				break;
-			case "2-4":
-
-				break;
-			case "2-5":
-
-				break;
-
-			case "3-1":
-
-				break;
-			case "3-2":
-
-				break;
-			case "3-3":
-
-				break;
-			case "3-4":
-
-				break;
-			case "3-5":
-
-				break;
-
-			case "4-1":
-
-				break;
-			case "4-2":
-
-				break;
-			case "4-3":
-
-				break;
-			case "4-4":
-
-				break;
-			case "4-5":
-
-				break;
-
-			case "5-1":
-
-				break;
-			case "5-2":
-
-				break;
-			case "5-3":
-
-				break;
-			case "5-4":
-
-				break;
-			case "5-5":
-
-				break;
-			default:
-				break;
-		}
-	}
 
 	public void OnBackMainStage()
 	{
+		subStageObject.SetActive(false);
+		description.gameObject.SetActive(false);
 		foreach (var item in subStage)
 		{
-			if (item.activeSelf == true)
-				item.gameObject.SetActive(false);
+			item.SetActive(false);
 		}
 	}
 
 	public void OnBackLobby()
 	{
-
+		SceneManager.LoadScene("02_LobbyScene");
 	}
 }

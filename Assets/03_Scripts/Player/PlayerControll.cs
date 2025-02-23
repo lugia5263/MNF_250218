@@ -11,9 +11,13 @@ public class PlayerControll : MonoBehaviour
 	private Rigidbody rigidbody;
 
 	[SerializeField] private float jumpPower = 100.0f;
-	[SerializeField] private PlayerModel model;
+	[SerializeField] private GameObject model;
+	[SerializeField] private PlayerModel modelPlayer;
+	[SerializeField] private PlayerModel modelPartner;
 
-	[SerializeField] private GameObject prefab_Effect;
+	// jump
+	private bool isJump = false;
+
 	
 
 	private void Start()
@@ -21,40 +25,6 @@ public class PlayerControll : MonoBehaviour
 		rigidbody = GetComponent<Rigidbody>();
 	}
 
-	/// <summary>
-	/// inputsystem을 활용한 move Function
-	/// </summary>
-	/// <param name="_moveValue">Inputsystem.InputValue</param>
-	public void Move(Vector2 _moveValue)
-	{
-		moveDir = Vector3.zero;
-		if ( _moveValue.x < 0.0f)
-		{
-			// left
-			if (_moveValue.x < -0.5f)
-			{ model.PlayModelAnimation(PlayerEnum.MODEL_ANI.RUN); }
-			else
-			{ model.PlayModelAnimation(PlayerEnum.MODEL_ANI.WALK); }
-			moveDir.z = -_moveValue.x;
-			model.SetFlip(true);
-		}
-		else if(_moveValue.x > 0.0f)
-		{
-			// right
-			if (_moveValue.x > 0.5f)
-			{ model.PlayModelAnimation(PlayerEnum.MODEL_ANI.RUN); }
-			else
-			{ model.PlayModelAnimation(PlayerEnum.MODEL_ANI.WALK); }
-			moveDir.z = _moveValue.x;
-			model.SetFlip(false);
-		}
-		else // _moveValue.x == 0.0f
-		{
-			model.PlayModelAnimation(PlayerEnum.MODEL_ANI.IDLE);
-		}
-		currSpeed = _moveValue.x * reachMoveSpeed;
-
-	}
 
 	private void Update()
 	{
@@ -65,14 +35,77 @@ public class PlayerControll : MonoBehaviour
 		}
 	}
 
-	public void Attack()
+
+	/// <summary>
+	/// inputsystem을 활용한 move Function
+	/// </summary>
+	/// <param name="_moveValue">Inputsystem.InputValue</param>
+	public void Move(Vector2 _moveValue)
 	{
-		model.PlayModelAnimation(PlayerEnum.MODEL_ANI.ATTACK);
+		moveDir = Vector3.zero;
+		SpeedAniCheck(_moveValue.x);
 	}
 
-	public void Jump()
+	/// <summary>
+	/// X값에 따라 애니메이션 조절
+	/// </summary>
+	/// <param name="_x">입력값</param>
+	private void SpeedAniCheck(float _x)
 	{
-		model.PlayModelAnimation(PlayerEnum.MODEL_ANI.JUMP);
+		if (_x < 0.0f)
+		{
+			// Ani
+			if (_x < -0.5f && isJump == false)
+			{
+				SetAni(false, PlayerEnum.MODEL_ANI.RUN);
+			}
+			else if (_x < 0.0f && isJump == false)
+			{
+				SetAni(false, PlayerEnum.MODEL_ANI.WALK);
+			}
+
+			// left move
+			moveDir.z = -_x;
+			SetFlip(true);
+		}
+		else if (_x > 0.0f)
+		{
+			// Ani
+			if (_x > 0.5f && isJump == false)
+			{
+				SetAni(false, PlayerEnum.MODEL_ANI.RUN);
+			}
+			else if (_x > 0.0f && isJump == false)
+			{
+				SetAni(false, PlayerEnum.MODEL_ANI.WALK);
+			}
+
+			// right move
+			moveDir.z = _x;
+			SetFlip(false);
+		}
+		else // _moveValue.x == 0.0f
+		{
+			// ani
+			if (isJump == false)
+			{
+				SetAni(false, PlayerEnum.MODEL_ANI.IDLE);
+			}
+		}
+		currSpeed = _x * reachMoveSpeed;
+	}
+
+
+	public void OnAttack()
+	{
+		SetAni(true, PlayerEnum.MODEL_ANI.ATTACK);
+	}
+
+	private void Jump()
+	{
+		if (isJump == true) return;
+		isJump = true;
+		SetAni(false, PlayerEnum.MODEL_ANI.JUMP);
 		rigidbody.AddForce(transform.up * jumpPower,ForceMode.Impulse);
 	}
 
@@ -81,44 +114,44 @@ public class PlayerControll : MonoBehaviour
 	{
 		if (_aniNumber < 0) return; else if (_aniNumber >= (int)PlayerEnum.MODEL_ANI.MAX) return;
 		PlayerEnum.MODEL_ANI aniEnum = (PlayerEnum.MODEL_ANI)_aniNumber;
-		model.PlayModelAnimation(aniEnum);
+		modelPlayer.PlayModelAnimation(aniEnum);
 	}
 #endif
 
-	public void OnLeft()
+	public void OnLeftBtn()
 	{
 		moveDir = Vector3.zero;
 		moveDir.z = -1.0f;
 		currSpeed = reachMoveSpeed;
-		model.PlayModelAnimation(PlayerEnum.MODEL_ANI.RUN);
-		model.SetFlip(true);
+		SetAni(false, PlayerEnum.MODEL_ANI.RUN);
+		SetFlip(true); 
 	}
-	public void OnLeftUp()
+	public void OnLeftBtnUp()
 	{
 		moveDir = Vector3.zero;
 		currSpeed = 0.0f;
-		model.PlayModelAnimation(PlayerEnum.MODEL_ANI.IDLE);
+		SetAni(false,PlayerEnum.MODEL_ANI.IDLE);
 	}
 
-	public void OnRight()
+	public void OnRightBtn()
 	{
 		moveDir = Vector3.zero;
 		moveDir.z = 1.0f;
 		currSpeed = reachMoveSpeed;
-		model.PlayModelAnimation(PlayerEnum.MODEL_ANI.RUN);
-		model.SetFlip(false);
+		SetAni(false,PlayerEnum.MODEL_ANI.RUN);
+		SetFlip(false);
 	}
 
-	public void OnRightUp()
+	public void OnRightBtnUp()
 	{
 		moveDir = Vector3.zero;
 		currSpeed = 0.0f;
-		model.PlayModelAnimation(PlayerEnum.MODEL_ANI.IDLE);
+		SetAni(false,PlayerEnum.MODEL_ANI.IDLE);
 	}
 
 	public void OnJump()
 	{
-
+		Jump();
 	}
 
 	public void OnSkill1()
@@ -132,4 +165,46 @@ public class PlayerControll : MonoBehaviour
 
 	}
 
+
+	private void SetAni(bool _isPlayerOnly, PlayerEnum.MODEL_ANI _aniEnum)
+	{
+		// if( _isPlayerOnly == true){
+		// if(partner.HP == 0) { _isPlayerOnly = true } } 
+		//
+		//
+
+		if (_isPlayerOnly)
+		{
+			modelPlayer.PlayModelAnimation(_aniEnum);
+		}
+		else
+		{
+			modelPlayer.PlayModelAnimation(_aniEnum);
+			modelPartner.PlayModelAnimation(_aniEnum);
+		}
+	}
+
+	private void SetFlip(bool _isLeft)
+	{
+		if(_isLeft)
+		{
+			model.transform.localRotation = Quaternion.Euler(0, -90, 0);
+		}
+		else
+		{
+			model.transform.localRotation = Quaternion.Euler(0, 90, 0);
+		}
+
+		modelPlayer.SetFlip(_isLeft);
+		modelPartner.SetFlip(_isLeft);
+	}
+
+
+	private void OnCollisionEnter(Collision collision)
+	{
+		if (collision.gameObject.tag == "Plane")
+		{
+			if(isJump == true)isJump = false;
+		}
+	}
 }
