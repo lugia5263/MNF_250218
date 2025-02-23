@@ -17,7 +17,7 @@ public class UIOption : MonoBehaviour
 	[SerializeField] private Scrollbar bgmScrollbar;
 	[SerializeField] private Scrollbar channalScrollbar;
 
-
+	#region Enable Disable AWake Start Update OnReset
 	private void OnEnable()
 	{
 		// 게임 매니저든 생성되면 초기화 필요
@@ -37,6 +37,25 @@ public class UIOption : MonoBehaviour
 		// SoundManager.Instance.SetSoundEffectVolume(prevSEVolume);
 		// SoundManager.Instance.SetBackGroundVolume(prevBGMVolume);
 	}
+
+	/// <summary>
+	/// 해당 UI를 초기 상태로 돌립니다.
+	/// </summary>
+	public void OnReset()
+	{
+
+		seScrollbar.value = prevSEVolume;
+		bgmScrollbar.value = prevBGMVolume;
+		channalScrollbar.value = prevChannalCount;
+
+		// 사운드 세팅을 이전 사운드 불륨으로
+		// SoundManager.Instance.SetSoundEffectVolume(prevSEVolume);
+		// SoundManager.Instance.SetBackGroundVolume(prevBGMVolume);
+	}
+	#endregion
+
+
+
 
 	public void SetActiveOptionWindow(bool _isFlag)
 	{

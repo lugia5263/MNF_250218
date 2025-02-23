@@ -27,12 +27,12 @@ public class InputSystem : MonoBehaviour
 
 	private void OnFire()
 	{
-		playerctrl.Attack();
+		playerctrl.OnAttack();
 	}
 
 	public void OnJump()
 	{
-		playerctrl.Jump();
+		playerctrl.OnJump();
 
 	}
 

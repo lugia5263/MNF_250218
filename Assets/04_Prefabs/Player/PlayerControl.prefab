@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reachMoveSpeed: 10
-  jumpPower: 2.5
+  jumpPower: 7
   model: {fileID: 6319419410192237311}
 --- !u!54 &826225411777767026
 Rigidbody:
