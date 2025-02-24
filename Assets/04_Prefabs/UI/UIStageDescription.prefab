@@ -1516,7 +1516,6 @@ MonoBehaviour:
   staminaText: {fileID: 7277211221781523514}
   subStageText: {fileID: 3524985768953756350}
   descStageText: {fileID: 2688334121325179985}
-  goFieldButton: {fileID: 6250398867159455179}
 --- !u!1 &4927018988313095218
 GameObject:
   m_ObjectHideFlags: 0

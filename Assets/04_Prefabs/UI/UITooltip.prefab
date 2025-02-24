@@ -127,7 +127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tooltipObj: {fileID: 1510806204573952691}
   text: {fileID: 8898999628056294714}
-  myRectTr: {fileID: 6912812619229302567}
+  imageRT: {fileID: 0}
   correctionPos: {x: 0, y: 10}
 --- !u!1 &9220222098650919647
 GameObject:
