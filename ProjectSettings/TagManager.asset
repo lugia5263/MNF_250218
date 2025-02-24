@@ -8,6 +8,11 @@ TagManager:
   - Wall
   - FieldCollision
   - StageMapPoint
+  - Plane
+  - SkyCube
+  - SkyCubePass
+  - SkyPlane
+  - ItemCube
   layers:
   - Default
   - TransparentFX

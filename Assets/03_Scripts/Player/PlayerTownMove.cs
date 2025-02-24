@@ -48,7 +48,7 @@ public class PlayerTownMove : MonoBehaviour
 		if (moveDir.z > 0) { isUp = true; isDown = false; }
 		else if (moveDir.z < 0) { isUp = false; isDown = true; }
 
-		Debug.Log("L : " + isLeft + "\t R : " + isRight + "\t U : " + isUp + "\t D : " + isDown + "MoveDir : " + moveDir);
+		//Debug.Log("L : " + isLeft + "\t R : " + isRight + "\t U : " + isUp + "\t D : " + isDown + "MoveDir : " + moveDir);
 		if (!isUp && !isDown && !isLeft && !isRight) { moveDir = Vector3.zero; return; }
 	}
 
