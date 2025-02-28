@@ -1,6 +1,8 @@
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +19,7 @@ public class UITextBox : MonoBehaviour
 	public GameObject choiceView;
 	public GameObject choiceScroll;
 	public GameObject talkService;
+	public GameObject singleService;
 
 	[SerializeField]
 	private Dictionary<string, ShopConversationData> shopDataDict = new Dictionary<string, ShopConversationData>();
@@ -84,8 +87,8 @@ public class UITextBox : MonoBehaviour
 					// default next scene 체크하는 조건문
 					if (shopDataDict[key].Default_Next_Scene != null)
 					{
-						defaultScene = int.Parse(Regex.Replace(shopDataDict[key].Default_Next_Scene, pattern, "", RegexOptions.IgnoreCase).Trim());
-						data.setDefaultScene(defaultScene);
+							defaultScene = int.Parse(Regex.Replace(shopDataDict[key].Default_Next_Scene, pattern, "", RegexOptions.IgnoreCase).Trim());
+							data.setDefaultScene(defaultScene);
 					}
 
 					if (condition.Count != 0)
@@ -116,9 +119,6 @@ public class UITextBox : MonoBehaviour
 	#region 대화 넘기기
 	public void Next()
 	{
-		if (shopList.Count - 1 == index + 1) return;
-		
-
 		foreach (TalkData data in shopList)
 		{
 			if (data.getDefaultScene() != 0)
@@ -167,7 +167,8 @@ public class UITextBox : MonoBehaviour
 				isConditionPerform();
 			}
 		}
-		if (index < shopList.Count - 1)
+		Debug.Log(shopList.Count - 1 + " : " + index);
+		if (index <= shopList.Count - 1)
 		{
 			StartCoroutine(CallSpriteImage(shopList[index].getFaceImage()));
 			StartCoroutine(TypeName(shopList[index].getCharacter()));
@@ -176,8 +177,52 @@ public class UITextBox : MonoBehaviour
 	}
 	#endregion
 
-	#region 선택지 생성
-	public void isConditionPerform()
+	public void StageStartNextBtn()
+	{
+        foreach (TalkData data in shopList)
+        {
+            if (data.getDefaultScene() != 0)
+            {
+                defaultScene = data.getDefaultScene();
+                break;
+            }
+        }
+        if (index <= defaultScene)
+        {
+            if (isTyping)
+            {
+                isTyping = false;
+                StopAllCoroutines();
+                TypingCompleteSentence(shopList[index].getDialogue());
+                return;
+            }
+            if (index == 0)
+            {
+                index++;
+            }
+            if (shopList[index].getDefaultScene() != 0)
+            {
+                if (textContent.text == shopList[index].getDialogue())
+                {
+                    singleService.SetActive(false);
+                    return;
+                }
+            }
+            if (index <= shopList.Count - 1)
+            {
+                StartCoroutine(CallSpriteImage(shopList[index].getFaceImage()));
+                StartCoroutine(TypeName(shopList[index].getCharacter()));
+                StartCoroutine(TypingSentence(shopList[index].getDialogue()));
+            }
+            if (shopList[index].getDefaultScene() == 0)
+            {
+                index++;
+            }
+        }
+    }
+
+    #region 선택지 생성
+    public void isConditionPerform()
 	{
 		DestroyChoice();
 		List<string> conditionList = shopList[index].getCondition();
