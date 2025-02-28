@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UITextBox : MonoBehaviour
@@ -17,6 +18,8 @@ public class UITextBox : MonoBehaviour
 	public GameObject choiceView;
 	public GameObject choiceScroll;
 	public GameObject talkService;
+	public GameObject singleService;
+	public GameObject battleStartConversation;
 
 	[SerializeField]
 	private Dictionary<string, ShopConversationData> shopDataDict = new Dictionary<string, ShopConversationData>();
@@ -109,6 +112,7 @@ public class UITextBox : MonoBehaviour
 				}
 			}
 		}
+		Debug.Log(shopList.Count);
 	}
 
 
@@ -174,10 +178,129 @@ public class UITextBox : MonoBehaviour
 			StartCoroutine(TypingSentence(shopList[index].getDialogue()));
 		}
 	}
+    #endregion
+
+    #region 스테이지 선택 대화 넘기기
+    public void onStartStageSelectNext()
+	{
+        if (shopList.Count - 1 == index + 1) return;
+
+
+        foreach (TalkData data in shopList)
+        {
+            if (data.getDefaultScene() != 0)
+            {
+                defaultScene = data.getDefaultScene();
+                break;
+            }
+        }
+        // 선택지가 떴을 때 다시 타이핑 효과 안나오게
+        if (isChoice) return;
+        // 타이핑 효과 진행중에 대화창 입력하면 문장 완성되는 기능
+        if (isTyping)
+        {
+            isTyping = false;
+            StopAllCoroutines();
+            TypingCompleteSentence(shopList[index].getDialogue());
+            if (shopList[index].getCondition() == null)
+            {
+                return;
+            }
+        }
+        if (index == 0)
+        {
+            index++;
+        }
+
+        // 선택지가 존재할 때
+        if (shopList[index].getCondition() != null)
+        {
+            isConditionPerform();
+        }
+        else
+        {
+            if (shopList[index].getDefaultScene() != 0)
+            {
+                index = shopList[index].getDefaultScene() - 1;
+                talkService.SetActive(false);
+				SceneManager.LoadScene("02_LobbyScene");
+                return;
+            }
+            index++;
+            if (index < shopList.Count - 1 && shopList[index + 1].getCondition() != null)
+            {
+                // 시나리오가 진행되는 중간에 선택지가 있으면 전 시나리오가 밀려서 실행되는 버그가 있어
+                // 다음 시나리오 선택지가 있는 것을 체크 해줌.
+                index++;
+                isConditionPerform();
+            }
+        }
+        if (index < shopList.Count - 1)
+        {
+            StartCoroutine(CallSpriteImage(shopList[index].getFaceImage()));
+            StartCoroutine(TypeName(shopList[index].getCharacter()));
+            StartCoroutine(TypingSentence(shopList[index].getDialogue()));
+        }
+    }
 	#endregion
 
-	#region 선택지 생성
-	public void isConditionPerform()
+    #region 스테이지 시작 대화 넘기기
+    public void onStartStageNext()
+	{
+        foreach (TalkData data in shopList)
+        {
+            if (data.getDefaultScene() != 0)
+            {
+                defaultScene = data.getDefaultScene();
+                break;
+            }
+        }
+        if (index <= defaultScene)
+        {
+            if (isTyping)
+            {
+                isTyping = false;
+                StopAllCoroutines();
+                TypingCompleteSentence(shopList[index].getDialogue());
+                return;
+            }
+            if (index == 0)
+            {
+                index++;
+            }
+            endTalk();
+            if (index <= shopList.Count - 1)
+            {
+                Debug.Log("???");
+                StartCoroutine(CallSpriteImage(shopList[index].getFaceImage()));
+                StartCoroutine(TypeName(shopList[index].getCharacter()));
+                StartCoroutine(TypingSentence(shopList[index].getDialogue()));
+            }
+            if (shopList[index].getDefaultScene() == 0)
+            {
+                index++;
+            }
+        }
+    }
+    #endregion
+
+    #region 대화 끝내기
+    public void endTalk()
+    {
+        if (shopList[index].getDefaultScene() != 0)
+        {
+            if (textContent.text == shopList[index].getDialogue())
+            {
+                singleService.SetActive(false);
+            }
+        }
+    }
+    #endregion
+
+
+
+    #region 선택지 생성
+    public void isConditionPerform()
 	{
 		DestroyChoice();
 		List<string> conditionList = shopList[index].getCondition();
@@ -203,7 +326,7 @@ public class UITextBox : MonoBehaviour
 				copyButton = Instantiate(choiceButton, choiceBox.transform);
 				choiceBox.transform.GetChild(i).GetComponent<Button>().onClick.AddListener(() => SelectChocie(idx));
 				copyButton.GetComponentInChildren<Text>().text = conditionList[i];
-				copyButton.GetComponentInChildren<Text>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+				copyButton.GetComponentInChildren<Text>().color = new Color(144, 69, 1, 174);
 				copyButton.GetComponentInChildren<Text>().fontSize = 20;
 			}
 			isChoice = true;
